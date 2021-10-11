@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+        "target": "ES2021",
+        "watch": true,
+        "sourceMap": true,
+        "module": "commonjs"
+    },
+    "exclude": [
+        "node_modules"
+    ],
+    "lib": ["DOM", "ES2017"]
+}
