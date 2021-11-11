@@ -1,0 +1,127 @@
+<%- include('./partials/header.ejs') %>
+
+    <div class="section">
+        <h1 class="compose__heading">Compose A new Blog</h1>
+        <h3 class="text-warning form__log"><%= log %></h3>
+
+        <form action="" method="post">
+            <div class="mb-3">
+                <label class="form-label">Enter Title of the Article</label>
+                <input type="text" class="form-control p-2" name="title" id="title" placeholder="Enter Title">
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Enter Writer Name(Only for Now)</label>
+                <input type="text" class="form-control p-2" name="writer" id="title" placeholder="Enter Writer's Name">
+            </div>
+            
+            <div class="mb-3 blog-categories">
+                <label class="form-label">Categories:</label>
+                <br>
+                <span class="category">
+                    <input type="checkbox" name="" id="c1">
+                    <label for="c1">Category Item</label>
+                </span>
+                
+                <span class="category">
+                    <input type="checkbox" name="" id="c2">
+                    <label for="c2">Category Item</label>
+                </span>
+
+                <span class="category">
+                    <input type="checkbox" name="" id="c3">
+                    <label for="c3">Category Item</label>
+                </span>
+
+                <span class="category">
+                    <input type="checkbox" name="" id="c4">
+                    <label for="c4">Category Item</label>
+                </span>
+
+                <span class="category">
+                    <input type="checkbox" name="" id="c5">
+                    <label for="c5">Category Item</label>
+                </span>
+
+                <span class="category">
+                    <input type="checkbox" name="" id="c6">
+                    <label for="c6">Category Item</label>
+                </span>
+                
+                <span class="category">
+                    <input type="checkbox" name="" id="c7">
+                    <label for="c7">Category Item</label>
+                </span>
+                
+                <span class="category">
+                    <input type="checkbox" name="" id="c8">
+                    <label for="c8">Category Item</label>
+                </span>
+                
+                <span class="category">
+                    <input type="checkbox" name="" id="c9">
+                    <label for="c9">Category Item</label>
+                </span>
+                
+                <span class="category">
+                    <input type="checkbox" name="" id="c10">
+                    <label for="c10">Category Item</label>
+                </span>
+                
+                <span class="category">
+                    <input type="checkbox" name="" id="c10">
+                    <label for="c10">Category Item</label>
+                </span>
+
+                <span class="category">
+                    <input type="checkbox" name="" id="c10">
+                    <label for="c10">Category Item</label>
+                </span>                    
+            </div>
+            
+            <label class="form-label">Content:</label>
+            <textarea id="example" name="blog" class="form-control froala__contentbox"></textarea>
+            <button class="compose__submit btn btn-lg btn-dark mt-3" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <!-- using the froala WYSIWYG editor -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/froala-editor/4.0.1/js/plugins/image.min.js" integrity="sha512-P+yVJJg5lRK2mmDyonaXvOcVOP+MLP4RmyV7rYq2ie+Bw/7b3JD0zecQf6dOZcr8T/+/rj3EyB5EzqbcAggIPA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        var editor = new FroalaEditor('#example', {
+            height: "500px",
+            imageUploadMethod: 'POST',
+            events: {
+                'image.beforeUpload': function(e, editor, response) {
+                    // Before image is uploaded
+                    const data = new FormData();
+                    console.log(e[0]);
+                    data.append('file', e[0]);
+                    data.append("api_key", '299848411521137');
+                    data.append("uploadPreset", 'j9x5tnic');
+                    data.append("upload_preset", "ml_default");
+                    console.log(this);
+                    axios({
+                        // Change this to your upload preset (your own cloudinary api)
+                        url: "https://api.cloudinary.com/v1_1/confused-bachlors/image/upload",
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded'
+                        },
+                        data: data
+                    })
+                    .then(res => {
+                        console.log(res);
+                        console.log("UPLOADED");
+                        this.image.insert(res.data.url, null, null, this.image.get());
+                    })
+                    .catch(err => console.log(err));
+                    return false;
+                }
+            }
+        });
+    </script>
+
+<%- include('./partials/footer.ejs') %>
